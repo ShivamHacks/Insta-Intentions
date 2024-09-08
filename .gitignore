@@ -1,5 +1,6 @@
 .DS_Store
 .cloud_creds.json
+.ai_key.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

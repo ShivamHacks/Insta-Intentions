@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 import uuid
+import json
 
 USER_TABLE = "InstaIntentions_Users"
 INSTA_HANDLE_TABLE = "InstaHandles_Handles"
@@ -83,11 +84,29 @@ class Database:
             return {"status": "error", "message": "User does not exist"}
         doc.set({"verified": True, "insta_handle": insta_handle}, merge=True)
         return {"status": "success"}
-    
+
     # Debug only method, not used in production
     def dump_full_database(self):
         users = self.db.collection(USER_TABLE).stream()
         insta_handles = self.db.collection(INSTA_HANDLE_TABLE).stream()
         user_data = {user.id: user.to_dict() for user in users}
-        insta_handle_data = {insta_handle.id: insta_handle.to_dict() for insta_handle in insta_handles}
+        insta_handle_data = {
+            insta_handle.id: insta_handle.to_dict() for insta_handle in insta_handles
+        }
         return {"users": user_data, "insta_handles": insta_handle_data}
+
+    # Debug only method, not used in production
+    def process_function_calls(self, function_calls):
+        results = []
+        for call in function_calls:
+            method_name = call.function.name
+            method = getattr(self, method_name, None)
+            if method:
+                arguments = json.loads(call.function.arguments)
+                result = method(**arguments)
+                results.append({"tool_call_id": call.id, "output": str(result)})
+            else:
+                results.append(
+                    {"tool_call_id": call.id, "output": "Function not found"}
+                )
+        return results
