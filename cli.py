@@ -1,5 +1,6 @@
 import inspect
 from database import Database
+import json
 
 
 def get_method_signatures(cls):
@@ -32,16 +33,17 @@ def get_method_signatures(cls):
 if __name__ == "__main__":
     app = Database()
     method_signatures = get_method_signatures(Database)
-    print(method_signatures)
 
     quit_words = ["quit", "exit"]
     current_command = None
     while True:
         # Select a command to execute
         if current_command is None:
+            print()
             for index, method_signature in enumerate(method_signatures):
                 print(f"{index + 1}: {method_signature['name']}")
             try:
+                print()
                 command = input("Select a command to execute (quit to exit): ")
                 if command.lower() in quit_words:
                     break
@@ -56,7 +58,7 @@ if __name__ == "__main__":
             if len(method_signatures[index]["params"]) == 0:
                 # Can call method directly
                 result = getattr(app, method_signatures[index]["name"])()
-                print(result)
+                print(json.dumps(result, indent=2))
                 current_command = None
                 continue
 
@@ -79,5 +81,5 @@ if __name__ == "__main__":
         result = getattr(app, method_signatures[current_command["index"]]["name"])(
             **current_command["params"]
         )
-        print(result)
+        print(json.dumps(result, indent=2))
         current_command = None
