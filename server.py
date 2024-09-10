@@ -39,4 +39,4 @@ def add_routes_for_object(obj, app):
 add_routes_for_object(database, app)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=3000)  # Replace 5000 with your desired port
