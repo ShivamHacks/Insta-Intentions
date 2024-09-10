@@ -205,36 +205,6 @@ GET /dump_full_database
 }
 ```
 
----
-
-### 7. **Process Function Calls (Debug Only)**
-
-Processes a batch of function calls and returns the results.
-
-**Endpoint:**
-```
-GET /process_function_calls?calls={calls_json}
-```
-
-**Parameters:**
-
-- `calls`: JSON string representing a list of function calls.
-
-**Response:**
-
-```json
-[
-  {
-    "tool_call_id": "<call_id_1>",
-    "output": "<function_output_1>"
-  },
-  {
-    "tool_call_id": "<call_id_2>",
-    "output": "<function_output_2>"
-  }
-]
-```
-
 # Misc Dev Notes
 
 ## File structure
