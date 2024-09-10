@@ -226,3 +226,9 @@ Root url: http://ec2-3-133-160-113.us-east-2.compute.amazonaws.com:5000/
 ## Helpful tips for EC2 setup
 1. Needed to make sure inbound rules in security groups on EC2 page included inbound traffic
 2. Check if server working locally with curl http://localhost:5000
+
+## Running flask server in background so ssh can be closed
+nohup python server.py > flask.log 2>&1 &
+
+## Killing flask server 
+ps aux | grep python
